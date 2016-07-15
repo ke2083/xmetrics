@@ -124,7 +124,12 @@ namespace XMetrics
                     continue;
                 }
 
-                foreach (var assemblyType in assembly.GetTypes())
+                var assemblyTypes = assembly
+                    .GetTypes()
+                    .Where(a => !excludeAssembliesStartingWith
+                        .Any(excl => a.FullName.StartsWith(excl, StringComparison.InvariantCultureIgnoreCase)));
+
+                foreach (var assemblyType in assemblyTypes)
                 {
                     var referenced = GatherReferencedTypes(assemblyType, excludeAssembliesStartingWith);
                     var referencing = new List<Type>();

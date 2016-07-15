@@ -9,8 +9,8 @@
              Name="MyToolWindow" d:DesignWidth="358.405" d:DesignHeight="242.666">
     <Grid Margin="0">
 
-        <TextBox x:Name="txtIgnore" TextWrapping="Wrap" Text="System, Microsoft" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0" Width="150"  />
-        <Label x:Name="lblIgnore" Content="Ignore:" Height="26" RenderTransformOrigin="0.53,-0.872" VerticalAlignment="Top" Margin="0,6,172,0" HorizontalAlignment="Right" Width="47" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>
+        <TextBox x:Name="txtIgnore" TextWrapping="Wrap" Text="System, Microsoft" VerticalAlignment="Top" Margin="198,10,10,0" Height="17.96"  />
+        <Label x:Name="lblIgnore" Content="Ignore:" Height="26" RenderTransformOrigin="0.53,-0.872" VerticalAlignment="Top" Margin="146,6,0,0" HorizontalAlignment="Left" Width="47" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>
         <Button Content="Analyse" Click="btnAnalyse_Click" x:Name="btnAnalyse" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="87" Margin="10,10,0,0" />
         <DataGrid x:Name="dataGrid" Margin="10,37,10,10" />
 
