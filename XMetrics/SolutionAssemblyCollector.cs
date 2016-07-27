@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using EnvDTE;
-using Microsoft.VisualStudio.Shell;
 using XMetrics.Reports;
 
 namespace XMetrics
@@ -17,9 +16,8 @@ namespace XMetrics
 
         private bool disposedValue = false; // To detect redundant calls
 
-        public SolutionAssemblyCollector()
+        public SolutionAssemblyCollector(DTE dte)
         {
-            var dte = (DTE)ServiceProvider.GlobalProvider.GetService(typeof(DTE));
             var projects = dte.Solution.Projects;
             assemblies = new ConcurrentQueue<Assembly>();
             var allProjects = new List<Project>();

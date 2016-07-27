@@ -6,6 +6,8 @@
 
 namespace XMetric.Tools
 {
+    using EnvDTE;
+    using Microsoft.VisualStudio.Shell;
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -38,7 +40,7 @@ namespace XMetric.Tools
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Default event handler naming pattern")]
         protected void btnAnalyse_Click(object sender, RoutedEventArgs e)
         {
-            using (var assemblyCollector = new SolutionAssemblyCollector())
+            using (var assemblyCollector = new SolutionAssemblyCollector((DTE)ServiceProvider.GlobalProvider.GetService(typeof(DTE))))
             {
                 var metrics = assemblyCollector.Analyse(txtIgnore.Text);
                 var totalClasses = metrics.AllClasses.Count();
