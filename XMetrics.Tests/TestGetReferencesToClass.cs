@@ -11,6 +11,13 @@ namespace XMetrics.Tests
 {
     public class TestGetReferencesToClass
     {
+        private XMetrics XMetrics;
+
+        public TestGetReferencesToClass()
+        {
+            XMetrics = new XMetrics();
+        }
+
         [Fact]
         public void GetReferencesToOtherClasses()
         {
