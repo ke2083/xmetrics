@@ -38,7 +38,16 @@ namespace XMetrics
         private static IEnumerable<Type> GatherReferencingTypes(Type searchType, Assembly assemblyToSearch)
         {
             var references = new ConcurrentQueue<Type>();
-            var typesToSearch = assemblyToSearch.GetTypes();
+            Type[] typesToSearch = null;
+            try
+            {
+                typesToSearch = assemblyToSearch.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                typesToSearch = ex.Types.Where(t => t != null).ToArray();
+            }
+
             Parallel.ForEach(typesToSearch, searchable =>
             {
                 using (var refGatherer = new ReferencesGatherer(searchType, searchable))
@@ -69,14 +78,12 @@ namespace XMetrics
                 {
                     types = assembly.GetTypes();
                 }
-                catch (ReflectionTypeLoadException)
+                catch (ReflectionTypeLoadException ex)
                 {
-                    // This will happen periodically for types that are not part of the solution.
-                    return;
+                    types = ex.Types.Where(t => t != null).ToArray();
                 }
 
-                var assemblyTypes = assembly
-                    .GetTypes()
+                var assemblyTypes = types
                     .Where(a => !excludeAssembliesStartingWith
                         .Any(excl => a.FullName.StartsWith(excl, StringComparison.InvariantCultureIgnoreCase)));
 

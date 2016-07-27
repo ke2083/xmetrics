@@ -33,99 +33,140 @@ namespace XMetrics.Gatherers
         public IEnumerable<Type> Examine()
         {
             var references = new List<Type>();
-            try
-            {
-                ReferencesInFields(references);
-                ReferencesInEvents(references);
-                ReferencesInProperties(references);
-                ReferencesInMethodReturns(references);
-                ReferencesInMethodBodies(references);
-                ReferencesInPropertyBodies(references);
-                ReferencesInConstructors(references);
-            }
-            catch (FileNotFoundException)
-            {
-                // This is normal for some assemblies that are not part of the solution.
-            }
-
+            ReferencesInFields(references);
+            ReferencesInEvents(references);
+            ReferencesInProperties(references);
+            ReferencesInMethodReturns(references);
+            ReferencesInMethodBodies(references);
+            ReferencesInPropertyBodies(references);
+            ReferencesInConstructors(references);
             return references;
         }
 
         private void ReferencesInConstructors(List<Type> references)
         {
-            searchableItem
-                        .GetConstructors()
-                        .SelectMany(c => c.GetMethodBody().LocalVariables)
-                        .Select(c => c.LocalType)
-                        .Where(c => c == searchItem)
-                        .ToList()
-                        .ForEach(references.Add);
+            try
+            {
+                searchableItem
+                            .GetConstructors()
+                            .SelectMany(c => c.GetMethodBody().LocalVariables)
+                            .Select(c => c.LocalType)
+                            .Where(c => c == searchItem)
+                            .ToList()
+                            .ForEach(references.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void ReferencesInPropertyBodies(List<Type> references)
         {
-            searchableItem
-                        .GetProperties()
-                        .Select(m => m.GetMethod.GetMethodBody())
-                        .Where(m => m != null)
-                        .SelectMany(m => m.LocalVariables)
-                        .Select(m => m.LocalType)
-                        .Where(m => m != searchItem)
-                        .ToList()
-                        .ForEach(references.Add);
+            try
+            {
+                searchableItem
+                            .GetProperties()
+                            .Select(m => m.GetMethod.GetMethodBody())
+                            .Where(m => m != null)
+                            .SelectMany(m => m.LocalVariables)
+                            .Select(m => m.LocalType)
+                            .Where(m => m != searchItem)
+                            .ToList()
+                            .ForEach(references.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void ReferencesInMethodBodies(List<Type> references)
         {
-            searchableItem
-                        .GetMethods()
-                        .Select(m => m.GetMethodBody())
-                        .Where(m => m != null)
-                        .SelectMany(m => m.LocalVariables)
-                        .Select(v => v.LocalType)
-                        .Where(v => v == searchItem)
-                        .ToList()
-                        .ForEach(references.Add);
+            try
+            {
+                searchableItem
+                            .GetMethods()
+                            .Select(m => m.GetMethodBody())
+                            .Where(m => m != null)
+                            .SelectMany(m => m.LocalVariables)
+                            .Select(v => v.LocalType)
+                            .Where(v => v == searchItem)
+                            .ToList()
+                            .ForEach(references.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void ReferencesInMethodReturns(List<Type> references)
         {
-            searchableItem
-                        .GetMethods()
-                        .Select(m => m.ReturnType)
-                        .Where(m => m == searchItem)
-                        .ToList()
-                        .ForEach(references.Add);
+            try
+            {
+                searchableItem
+                            .GetMethods()
+                            .Select(m => m.ReturnType)
+                            .Where(m => m == searchItem)
+                            .ToList()
+                            .ForEach(references.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void ReferencesInProperties(List<Type> references)
         {
-            searchableItem
-                        .GetProperties()
-                        .Select(p => p.PropertyType)
-                        .Where(p => p == searchItem)
-                        .ToList()
-                        .ForEach(references.Add);
+            try
+            {
+                searchableItem
+                            .GetProperties()
+                            .Select(p => p.PropertyType)
+                            .Where(p => p == searchItem)
+                            .ToList()
+                            .ForEach(references.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void ReferencesInEvents(List<Type> references)
         {
-            searchableItem
-                        .GetEvents()
-                        .Select(e => e.EventHandlerType)
-                        .Where(e => e == searchItem)
-                        .ToList()
-                        .ForEach(references.Add);
+            try
+            {
+                searchableItem
+                            .GetEvents()
+                            .Select(e => e.EventHandlerType)
+                            .Where(e => e == searchItem)
+                            .ToList()
+                            .ForEach(references.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void ReferencesInFields(List<Type> references)
         {
-            searchableItem
-                        .GetFields()
-                        .Select(f => f.FieldType)
-                        .Where(f => f == searchItem)
-                        .ToList()
-                        .ForEach(references.Add);
+            try
+            {
+                searchableItem
+                            .GetFields()
+                            .Select(f => f.FieldType)
+                            .Where(f => f == searchItem)
+                            .ToList()
+                            .ForEach(references.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
     }
 }

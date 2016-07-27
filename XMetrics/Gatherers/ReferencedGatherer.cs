@@ -26,81 +26,130 @@ namespace XMetrics.Gatherers
 
         private void FindReferencesInConstructors(List<Type> referencedTypes)
         {
-            typeToExamine
-                           .GetConstructors()
-                            .Select(c => c.GetMethodBody())
-                            .Where(c => c != null)
-                            .SelectMany(c => c.LocalVariables)
-                           .Select(c => c.LocalType)
-                           .Where(c => c != typeToExamine)
-                           .ToList()
-                           .ForEach(referencedTypes.Add);
+            try
+            {
+                typeToExamine
+                               .GetConstructors()
+                                .Select(c => c.GetMethodBody())
+                                .Where(c => c != null)
+                                .SelectMany(c => c.LocalVariables)
+                               .Select(c => c.LocalType)
+                               .Where(c => c != typeToExamine)
+                               .ToList()
+                               .ForEach(referencedTypes.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void FindReferencesInEvents(List<Type> referencedTypes)
         {
-            typeToExamine
-                        .GetEvents()
-                        .Select(e => e.EventHandlerType)
-                        .Where(e => e != typeToExamine)
-                        .ToList()
-                        .ForEach(referencedTypes.Add);
+            try
+            {
+                typeToExamine
+                            .GetEvents()
+                            .Select(e => e.EventHandlerType)
+                            .Where(e => e != typeToExamine)
+                            .ToList()
+                            .ForEach(referencedTypes.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void FindReferencesInFields(List<Type> referencedTypes)
         {
-            typeToExamine
-                        .GetFields()
-                        .Select(f => f.FieldType)
-                        .Where(f => f != typeToExamine)
-                        .ToList()
-                        .ForEach(referencedTypes.Add);
+            try
+            {
+                typeToExamine
+                            .GetFields()
+                            .Select(f => f.FieldType)
+                            .Where(f => f != typeToExamine)
+                            .ToList()
+                            .ForEach(referencedTypes.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void FindReferencesInMethodBodies(List<Type> referencedTypes)
         {
-            typeToExamine
-                        .GetMethods()
-                        .Select(m => m.GetMethodBody())
-                        .Where(m => m != null && m.LocalVariables != null && m.LocalVariables.Any())
-                        .SelectMany(m => m.LocalVariables)
-                        .Select(v => v.LocalType)
-                        .Where(v => v != typeToExamine)
-                        .ToList()
-                        .ForEach(referencedTypes.Add);
+            try
+            {
+                typeToExamine
+                            .GetMethods()
+                            .Select(m => m.GetMethodBody())
+                            .Where(m => m != null && m.LocalVariables != null && m.LocalVariables.Any())
+                            .SelectMany(m => m.LocalVariables)
+                            .Select(v => v.LocalType)
+                            .Where(v => v != typeToExamine)
+                            .ToList()
+                            .ForEach(referencedTypes.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void FindReferencesInMethodReturns(List<Type> referencedTypes)
         {
-            typeToExamine
-                        .GetMethods()
-                        .Select(m => m.ReturnType)
-                        .Where(m => m != typeToExamine)
-                        .ToList()
-                        .ForEach(referencedTypes.Add);
+            try
+            {
+                typeToExamine
+                            .GetMethods()
+                            .Select(m => m.ReturnType)
+                            .Where(m => m != typeToExamine)
+                            .ToList()
+                            .ForEach(referencedTypes.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void FindReferencesInProperties(List<Type> referencedTypes)
         {
-            typeToExamine
-                        .GetProperties()
-                        .Select(p => p.PropertyType)
-                        .Where(p => p != typeToExamine)
-                        .ToList()
-                        .ForEach(referencedTypes.Add);
+            try
+            {
+                typeToExamine
+                            .GetProperties()
+                            .Select(p => p.PropertyType)
+                            .Where(p => p != typeToExamine)
+                            .ToList()
+                            .ForEach(referencedTypes.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         private void FindReferencesInPropertyBodies(List<Type> referencedTypes)
         {
-            typeToExamine
-                            .GetProperties()
-                            .Select(m => m.GetMethod.GetMethodBody())
-                            .Where(m => m != null)
-                            .SelectMany(m => m.LocalVariables)
-                            .Select(m => m.LocalType)
-                            .Where(m => m != typeToExamine)
-                            .ToList()
-                            .ForEach(referencedTypes.Add);
+            try
+            {
+                typeToExamine
+                                .GetProperties()
+                                .Select(m => m.GetMethod.GetMethodBody())
+                                .Where(m => m != null)
+                                .SelectMany(m => m.LocalVariables)
+                                .Select(m => m.LocalType)
+                                .Where(m => m != typeToExamine)
+                                .ToList()
+                                .ForEach(referencedTypes.Add);
+            }
+            catch (FileNotFoundException)
+            {
+                // This is normal for some assemblies that are not part of the solution.
+            }
         }
 
         public void Dispose()
@@ -110,21 +159,13 @@ namespace XMetrics.Gatherers
         public IEnumerable<Type> Examine()
         {
             var referencedTypes = new List<Type>();
-            try
-            {
-                FindReferencesInFields(referencedTypes);
-                FindReferencesInEvents(referencedTypes);
-                FindReferencesInProperties(referencedTypes);
-                FindReferencesInMethodReturns(referencedTypes);
-                FindReferencesInMethodBodies(referencedTypes);
-                FindReferencesInPropertyBodies(referencedTypes);
-                FindReferencesInConstructors(referencedTypes);
-            }
-            catch (FileNotFoundException)
-            {
-                // This is normal for some assemblies that are not part of the solution.
-            }
-
+            FindReferencesInFields(referencedTypes);
+            FindReferencesInEvents(referencedTypes);
+            FindReferencesInProperties(referencedTypes);
+            FindReferencesInMethodReturns(referencedTypes);
+            FindReferencesInMethodBodies(referencedTypes);
+            FindReferencesInPropertyBodies(referencedTypes);
+            FindReferencesInConstructors(referencedTypes);
             return referencedTypes;
         }
     }
