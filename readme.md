@@ -1,4 +1,4 @@
-# XMetrics
+Amendment 2
 ## A simple metrics tool window for .Net projects.
 Amendment 1
 ## Installation
