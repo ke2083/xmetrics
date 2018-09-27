@@ -1,6 +1,6 @@
 # XMetrics
 ## A simple metrics tool window for .Net projects.
-
+Amendment 1
 ## Installation
 
 Download and extract Release/Release.zip and then run the VISX installer within.
